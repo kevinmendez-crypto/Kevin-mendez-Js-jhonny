@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const app = express();
 const port = 3000;
 
@@ -9,4 +9,10 @@ app.get("/",(req,res)=>{
 app.listen(port, () => {
     console.log(`Servidor en funcionamiento en el puerto:`);
 });
+
+const usuario = "Kevin mendez";
+console.log(`Bienvenido de nuevo, ${usuario}!`);
+
+const correo = "kevinmendezboff@gmail.com";
+console.log(`Tu correo es: ${correo}`);
 
