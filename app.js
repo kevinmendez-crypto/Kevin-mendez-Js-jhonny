@@ -7,6 +7,6 @@ app.get("/",(req,res)=>{
 });
 
 app.listen(port, () => {
-    console.log(`Servidor en funcionamiento en el puerto:`);
+    console.log(`Servidor en funcionamiento en el puerto de la consola:`);
 });
 
