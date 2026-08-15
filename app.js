@@ -108,6 +108,30 @@ app.get('/usuarios/:id/:posts_id/comentarios', (req, res) => {
 });
 
 
+app.get('/libros/:isbn', (req, res) => {
+    const { isbn } = req.params;
+
+
+    const libros = [
+        { isbn: '978-0140449136', titulo: 'La Odisea', autor: 'Homero' },
+        { isbn: '978-8437604947', titulo: 'Cien años de soledad', autor: 'Gabriel García Márquez' },
+        { isbn: '978-0307474728', titulo: '1984', autor: 'George Orwell' }
+    ];
+
+
+    const libroEncontrado = libros.find(libro => libro.isbn === isbn);
+
+
+    if (!libroEncontrado) {
+        return res.status(404).send('Libro no encontrado');
+    }
+
+
+    res.json(libroEncontrado);
+});
+
+
+
 // Logs informativos
 const usuario = "Kevin mendez";
 console.log(`Bienvenido de nuevo, ${usuario}!`);
