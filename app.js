@@ -64,7 +64,7 @@ app.get("/ruta7/productos/:categoria/:id", (req, res) => {
     res.json({ "categoria": nameCategoria, "id": id });
 });
 
-// Punto 4: Parámetros combinados con Query Params
+
 app.get('/usuarios/:id/posts', (req, res) => {
     const { id } = req.params;
     const { orden = 'asc' } = req.query;
@@ -85,6 +85,29 @@ app.get('/usuarios/:id/posts', (req, res) => {
     });
 });
 
+app.get('/usuarios/:id/:posts_id/comentarios', (req, res) => {
+    const { id, posts_id } = req.params;
+    const { orden = 'asc' } = req.query;
+
+
+    const comentariosSimulados = [
+        { id: 1, texto: 'Excelente publicación', fecha: '2026-02-01' },
+        { id: 2, texto: 'Muy interesante todo', fecha: '2026-02-10' }
+    ];
+
+    const comentariosOrdenados = orden === 'desc'
+        ? [...comentariosSimulados].reverse()
+        : comentariosSimulados;
+
+    res.json({
+        usuarioId: id,
+        postId: posts_id,
+        ordenAplicado: orden,
+        comentarios: comentariosOrdenados
+    });
+});
+
+
 // Logs informativos
 const usuario = "Kevin mendez";
 console.log(`Bienvenido de nuevo, ${usuario}!`);
@@ -92,7 +115,7 @@ console.log(`Bienvenido de nuevo, ${usuario}!`);
 const correo = "kevinmendezboff@gmail.com";
 console.log(`Tu correo es: ${correo}`);
 
-// Inicio del servidor (SIEMPRE debe ir después de definir las rutas)
+
 app.listen(port, () => {
     console.log(`Servidor: http://localhost:${port}`);
 });
