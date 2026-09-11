@@ -2,9 +2,10 @@ const { error } = require('console');
 const express = require('express');
 const app= express();
 require('dotenv').config();
-const port = process.env.PUERTO || 3000;
+const port = process.env.PUERTO || 3030;
 //importacion  de middleware propios
 const registroMiddleware = require("./middleware/registroMiddleware")
+const manejadoErrores = require("./middleware/manejadoErrores")
 
 //middleware para parsear datos del body
 app.use(express.json()) 
@@ -16,6 +17,7 @@ app.use((req, res, next)=>{
     next()
 })
 app.use(registroMiddleware)
+
 
 //leer archivo
 const sistemaArchivo = require("fs");
@@ -126,7 +128,16 @@ app.post("/rutaFormularios", (req, res)=>{
     
     res.json({Todosdatos: todosDatos, Mi_Programa: programa})
 })
+//error provocado
+app.get("/error",(req, res, next)=>{
+    next(new Error("error intencional de mi app"))    
+})
+//ruta protegida
+app.get("/api/rutaprotegida",(req, res)=>{
+    res.status(200).json({mensaje: "esta es mi ruta protegida !!!"})
+})
 
+app.use(manejadoErrores)
 
 app.listen(port, () => {
     console.log( `Servidor: http://localhost:${port}` );
