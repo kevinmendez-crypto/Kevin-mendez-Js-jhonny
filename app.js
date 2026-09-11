@@ -3,9 +3,11 @@ const express = require('express');
 const app= express();
 require('dotenv').config();
 const port = process.env.PUERTO || 3030;
+const jwt = require ("jsonwebtoken")
 //importacion  de middleware propios
 const registroMiddleware = require("./middleware/registroMiddleware")
 const manejadoErrores = require("./middleware/manejadoErrores")
+const autenticacion = require("./middleware/autenticacion")
 
 //middleware para parsear datos del body
 app.use(express.json()) 
@@ -17,6 +19,7 @@ app.use((req, res, next)=>{
     next()
 })
 app.use(registroMiddleware)
+
 
 
 //leer archivo
@@ -133,9 +136,33 @@ app.get("/error",(req, res, next)=>{
     next(new Error("error intencional de mi app"))    
 })
 //ruta protegida
-app.get("/api/rutaprotegida",(req, res)=>{
+app.get("/api/rutaprotegida",autenticacion,(req, res)=>{
     res.status(200).json({mensaje: "esta es mi ruta protegida !!!"})
 })
+
+//login, inicio de sesion 
+app.post("/api/login", (req, res)=>{
+    //simulador datos de la db
+    const usuarioBd = {
+        "usuario":"jonny",
+        "clave":"abc123"
+    }
+    const {usuario, clave} = req.body
+    //validar datos
+    if(usuario !== usuarioBd.usuario || clave !== usuarioBd.clave){
+        res.status(400).json({mensaje: "credecnciales no validas, usuario y clave incorrectos"})
+    }
+    //crear variables para almacenar 
+    const token = jwt.sign(
+        //datos usuario
+        {"usuario": req.usuario},
+        //generar token
+        process.env.JWT_SECRET,
+        {expiresIn: "1h"}
+    )
+})
+
+
 
 app.use(manejadoErrores)
 
