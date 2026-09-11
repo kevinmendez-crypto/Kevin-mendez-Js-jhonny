@@ -3,6 +3,9 @@ const express = require('express');
 const app= express();
 require('dotenv').config();
 const port = process.env.PUERTO || 3000;
+//importacion  de middleware propios
+const registroMiddleware = require("./middleware/registroMiddleware")
+
 //middleware para parsear datos del body
 app.use(express.json()) 
 app.use (express.urlencoded({extended:true}))
@@ -12,6 +15,7 @@ app.use((req, res, next)=>{
     console.log(`Fecha: ${new Date().toISOString()}`)
     next()
 })
+app.use(registroMiddleware)
 
 //leer archivo
 const sistemaArchivo = require("fs");
